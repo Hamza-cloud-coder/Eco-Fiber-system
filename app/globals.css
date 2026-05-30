@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+  }
+
+  .mesh-bg {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .grain-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 10;
+  }
+}
+
+@keyframes float {
+  0% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
+  33% { transform: translate(30px, -50px) scale(1.1) rotate(15deg); }
+  66% { transform: translate(-20px, 20px) scale(0.9) rotate(-10deg); }
+  100% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
+}
+
+.blob-1 {
+  position: absolute;
+  top: -10%; left: -10%;
+  width: 50vw; height: 50vw;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.2) 0%, transparent 70%);
+  animation: float 20s infinite ease-in-out;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.blob-2 {
+  position: absolute;
+  bottom: -10%; right: -10%;
+  width: 60vw; height: 60vw;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+  animation: float 25s infinite ease-in-out reverse;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+@layer base {
+  .maplibregl-popup-content {
+    @apply bg-transparent! shadow-none! p-0! rounded-none!;
+  }
+  .maplibregl-popup-tip {
+    @apply hidden!;
+  }
+}
