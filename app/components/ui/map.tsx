@@ -20,13 +20,61 @@ export function Map({ theme = 'dark', viewport, children }: any) {
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    const styleUrl = theme === 'dark' 
-      ? 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
-      : 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
+    const darkStyle: maplibregl.StyleSpecification = {
+      version: 8,
+      sources: {
+        'carto-dark': {
+          type: 'raster',
+          tiles: [
+            "https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+            "https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+            "https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+            "https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png"
+          ],
+          tileSize: 256,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        }
+      },
+      layers: [
+        {
+          id: 'carto-dark-layer',
+          type: 'raster',
+          source: 'carto-dark',
+          minzoom: 0,
+          maxzoom: 22
+        }
+      ]
+    };
+
+    const lightStyle: maplibregl.StyleSpecification = {
+      version: 8,
+      sources: {
+        'carto-light': {
+          type: 'raster',
+          tiles: [
+            "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png",
+            "https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png",
+            "https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png",
+            "https://d.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png"
+          ],
+          tileSize: 256,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        }
+      },
+      layers: [
+        {
+          id: 'carto-light-layer',
+          type: 'raster',
+          source: 'carto-light',
+          minzoom: 0,
+          maxzoom: 22
+        }
+      ]
+    };
 
     const newMap = new maplibregl.Map({
       container: mapContainer.current,
-      style: styleUrl,
+      style: theme === 'dark' ? darkStyle : lightStyle,
       center: viewport?.center || [0, 0],
       zoom: viewport?.zoom || 1,
       pitch: viewport?.pitch || 0,
